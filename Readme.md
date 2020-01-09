@@ -1,5 +1,5 @@
 
-# Movement
+## Movement
 
 - A for left and D for right. W for activating the jetpack and jumping up. And some button for
     firing bullets at the enemies.
@@ -8,13 +8,13 @@
     the ‘W’ key is pressed. When ‘W’ is released, the jetpack deactivates and gravity comes into play.
     There must be a gravity-like effect when the he moves up or down.
 
-# Background and Scenery
+## Background and Scenery
 
 - The scenery and the obstacles must change as you move in and out of the window. There must be
     a ground/platform and the sky, and the Mandalorian can’t go below the ground or above the sky.
 - Lots of coins suspended which the Mandalorian can collect and increase his score.
 
-# Obstacles 
+## Obstacles 
 
 - Fire Beams: Beam like structures should appear (like in the figure above) as obstacles. There
     must be three kinds of beams: horizontal, vertical and some at 45◦with the ground/platform. The
@@ -26,7 +26,7 @@
     Mandalorian. So if he is in the range of the magnet, he would be continuously attracted towards
     the magnet. Assume that the magnet causes a constant attractive force in its direction. 
 
-# The Boss Enemy!! 
+## The Boss Enemy!! 
 
 - The boss enemy must appear in the end and once the Mandalorian defeats it, he can rescue Baby
     Yoda and complete the game. The boss enemy is Viserion, the flying dragon thatadjusts its
@@ -38,7 +38,7 @@
     The dragon need not look like an exact dragon :P But do look up ASCII arts online, some of them
     are beautiful :)
 
-# Score and Lives
+## Score and Lives
 
 - Score must be displayed on the top. You can calculate it as you like, taking into account the
     number of coins collected. Have score increments for killing enemies and the boss enemy.
@@ -46,14 +46,14 @@
     ing’ must be displayed on the top along the score. End the game when all lives are over, or if the
     user quits by pressing ’Q’.
 
-# Power-Ups 
+## Power-Ups 
 
 - Speed boost: The speed of the game will increase upon taking this power-up. 
 - Shield: A shield should appear around the Mandalorian using which, he will not be affected by
     the enemies and obstacles. The shield will be activated using the ’Space’ key and will last for 10
     seconds. It will take 60 seconds for shield power-up to refill again after use.
 
-# Bonus 
+## Bonus 
 That’s a 100 points so far! Additionally, you could implement the following to be eligible for some bonus
 marks.
 
