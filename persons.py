@@ -14,7 +14,7 @@ class person:
 		print("\033[{};{}f m".format(yp,xp))	
 	def updatex(self):
 		self.x+=self.velx
-		self.y-=self.dr	
+		self.y+=self.dr	
 	def update(self):
 		self.x+=self.velx
 		self.vely+=0.05
@@ -60,7 +60,19 @@ class spr(sprite):
 		self.x-=sp
 		if self.x<=3:
 			self.valid=0
-	
+class bull(sprite):
+	def __init__(self,x,y,vx,vy,ch):
+		sprite.__init__(self,x,y,ch)
+		self.vx=vx
+		self.vy=vy
+	def update(self):
+		self.x-=self.vx
+		self.y-=self.vy	
+		if self.x<=3:
+			self.valid=0
+		if self.y>35 or self.y <3:
+			self.valid=0
+
 class dragon(sprite):
 	def __init__(self,x,y,ch):
 		sprite.__init__(self,x,y,ch)
