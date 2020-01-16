@@ -87,7 +87,7 @@ def mandalorian():
     me = person(50,9)
     bsp = boss()
     score=0
-    lives=3
+    lives=5
     co=[]
     ob=[]
     mag=[]
@@ -102,34 +102,35 @@ def mandalorian():
     sheildav=1
     bossm=0
     bb=[]
-    speed=1.5
+    speed=1
     speedp=0
     time = 60
     bossh=100
     t=0
+    bt=20
 
     while True:
         tty.setcbreak(sys.stdin.fileno())
 
         t+=1
-        sleep(0.1)
+        sleep(0.08)
         system('clear')
         # key event
         key_pressed()
         if UpKey:
             UpKey=False
-            me.vely-=0.2
+            me.upy(-0.2)
             # if dragonp:                     #on for dragon movement
             #     me.dr-=0.02
         if RightKey:
             RightKey=False
-            me.velx+=0.1
+            me.upx(0.1)
         if LeftKey:
             LeftKey=False
-            me.velx-=0.1 
+            me.upx(-0.1) 
         if Bullet:
             Bullet=False
-            bu.append(spr(me.x,me.y,'>'))
+            bu.append(spr(me.getx(),me.gety(),'>'))
         # if DownKey:                         #on for dragon movement
         #     if dragonp:
         #         me.dr+=0.02
@@ -153,11 +154,11 @@ def mandalorian():
                 if i==1:createpower(sp,'P')
                 if i==2:createpower(dra,'D')
         
-        if t%500==0:
+        if t%1000==0:
             mag.append(spr(135,randint(5,35),'M'))
         
 
-        if t>2000:                         ## boss mode on
+        if t>bt:                         ## boss mode on
             bossm=1
                 
         if speedp==1:
@@ -169,25 +170,29 @@ def mandalorian():
             me.printp(sheildp)
         else:
             me.updatex()
-            if t%10>4:drag.append(dragon(me.x,me.y+t%5,"D"))
-            else: drag.append(dragon(me.x,me.y+4-t%5,"D"))
+            if t%10>4:drag.append(dragon(me.getx(),me.gety()+t%5,"D"))
+            else: drag.append(dragon(me.getx(),me.gety()+4-t%5,"D"))
         
         if bossm:                           ## boss mocd on
             # bb have boss bullets
             if t%4==0:
-                bx=100-me.x
-                by=25-me.y
+                bx=100-me.getx()
+                by=25-me.gety()
                 dis = floor(sqrt((bx)**2+(by)**2))
-                vx=(bx/dis)*2
+                vx=(bx/dis)*2+1
                 vy=(by/dis)*2
-                bb.append(bull(100,bsp.y,vx,vy,'*'))
+                bb.append(bull(100,bsp.gety(),vx,vy,'*'))
             d =0
-            if me.y-bsp.y > 0:d=1
+            if me.gety()-bsp.gety() > 0:d=1
             bsp.update(d)
             bsp.printb()
             
             for i in bu:  # bullet cause it have differt direct
                 i.update(-2)
+                if i.gety()>35:
+                	bu.remove(i)
+                if i.getx()>143:
+                	bu.remove(i)
                 if i.valid:
                     i.printsp(color.PURPLE)
                 else:
@@ -201,12 +206,12 @@ def mandalorian():
             
             #boss hit me
             for i in bb:
-                if abs(me.x-i.x)<2 and abs(me.y-i.y)<1:
+                if abs(me.getx()-i.getx())<2 and abs(me.gety()-i.gety())<1:
                     bb.remove(i)
                     lives-=1
             # me hit boss
             for i in bu:
-                if abs(100-i.x)<1 and abs(bsp.y-i.y)<2:
+                if abs(100-i.getx())<1 and abs(bsp.gety()-i.gety())<2:
                     bu.remove(i)
                     bossh-=5 
                
@@ -240,6 +245,10 @@ def mandalorian():
 
             for i in bu:  # bullet cause it have differt direct
                 i.update(-2)
+                if i.gety()>35:
+                	bu.remove(i)
+                if i.getx()>143:
+                 	bu.remove(i)
                 if i.valid:
                     i.printsp(color.PURPLE)
                 else:
@@ -247,7 +256,7 @@ def mandalorian():
 
             #coin select
             for i in co:
-                if abs(me.x-i.x)<2 and abs(me.y-i.y)<1:
+                if abs(me.getx()-i.getx())<2 and abs(me.gety()-i.gety())<1:
                     score+=1
                     co.remove(i)
             
@@ -255,7 +264,7 @@ def mandalorian():
             for i in ob:
                 if sheildp==1:
                     continue
-                if abs(me.x-i.x)<2 and abs(me.y-i.y)<1:
+                if abs(me.getx()-i.getx())<2 and abs(me.gety()-i.gety())<1:
                     ob.remove(i)
                     if dragonp==0:
                         lives-=1
@@ -263,13 +272,13 @@ def mandalorian():
 
             #powerup
             for i in sp:
-                if abs(me.x-i.x)<1 and abs(me.y-i.y)<1:
+                if abs(me.getx()-i.getx())<1 and abs(me.gety()-i.gety())<1:
                     sp.remove(i)
                     spstart=int(tik.elapsed)
                     speedp=1        
             
             for i in dra:
-                if abs(me.x-i.x)<1 and abs(me.y-i.y)<1:
+                if abs(me.getx()-i.getx())<1 and abs(me.gety()-i.gety())<1:
                     dra.remove(i)
                     dragonp=1         
             #magnet effect
@@ -278,12 +287,12 @@ def mandalorian():
                     mag.remove(i)
                     continue
                 i.printsp(color.DARKCYAN)
-                disx=i.x-me.x
-                disy=i.y-me.y
+                disx=i.getx()-me.getx()
+                disy=i.gety()-me.gety()
                 dis=floor(sqrt(disx**2+disy**2))        
                 if dis!=0:
-                    me.velx+=(disx//dis)*3
-                    me.vely+=(disy//dis)*3
+                    me.upx((disx//dis)*3)
+                    me.upy((disy//dis)*3)
                 i.update(speed)
                 
             #dragon if it come
@@ -291,7 +300,7 @@ def mandalorian():
                 if i.valid==0:
                     drag.remove(i)
                     continue
-                i.printsp()
+                i.printsp(color.GREEN)
                 i.update()
             if dragonp==0:
                 drag=[]
@@ -308,7 +317,7 @@ def mandalorian():
         tik.toc()
         ct=int(tik.elapsed)
         # print("\033[41;0f {},{}".format(me.x,me.y))
-        print("\033[42;0f {},{}".format(me.velx,me.vely))
+        # print("\033[42;0f {},{}".format(me.velx,me.vely))
         print("\033[1;0f score:{}".format(score))
         print("\033[2;0f lives:{}".format(lives))
         if sheildav==0:
@@ -338,7 +347,7 @@ def mandalorian():
             print("\033[3;90f BOSS HEALTH:{}".format(bossh))
 
             if bossh < 1 :
-                print("\033[10;80f YOU SAVED BABY YODA! :){}")
+                print("\033[10;80f YOU SAVED BABY YODA! :)")
                 return
           
         
@@ -347,6 +356,8 @@ def mandalorian():
             print("TIME OVER")
             return
         print("\033[6;0f time:{}".format(time))
+        if bossm==0:
+        	print("\033[3;50f percentage:{}".format(int((t*100)/bt)))
 
 if __name__ == "__main__":
     system('clear')
