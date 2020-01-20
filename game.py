@@ -54,23 +54,25 @@ def key_pressed():
 def createobs(ob):
     ra_y = randint(8,32)
     r= randint(0,3)
+    te=list()
     if r==0:
-        for i in range(4,-1,-1):    
-            ob.append(spr(135-2*i,ra_y,"_"))
+        for i in range(5,-1,-1):    
+            te.append(spr(135-2*i,ra_y,"="))
     elif r==1:
-        for i in range(4,-1,-1):    
-            ob.append(spr(135-i,ra_y-i,"\\"))
+        for i in range(5,-1,-1):    
+            te.append(spr(135-i,ra_y-i,"\\\\"))
     elif r==2:
-        for i in range(4,-1,-1):    
-            ob.append(spr(134+i,ra_y-i,"/"))
+        for i in range(5,-1,-1):    
+            te.append(spr(134+i,ra_y-i,"//"))
     else:
-        for i in range(4,-1,-1):    
-            ob.append(spr(135,ra_y+i,"|"))                
+        for i in range(5,-1,-1):    
+            te.append(spr(135,ra_y+i,"||"))                
+    ob.append(te)
 
 def createcoins(co):
     ra_y = randint(5,32)
     for i in range(0,3):
-        for j in range(4,-1,-1):
+        for j in range(5,-1,-1):
             co.append(spr(138-2*j,ra_y+i,'C'))
 
 def createpower(sh,ch):
@@ -83,37 +85,14 @@ def mandalorian():
     global UpKey,DownKey,LeftKey,RightKey,PauseKey,QuitKey,Bullet,sheildkey
     tik =TicToc()
     tik.tic()
-    STEP = 0.0001
-    me = person(50,9)
-    bsp = boss()
-    score=0
-    lives=5
-    co=[]
-    ob=[]
-    mag=[]
-    dra=[]
-    drag=[]
-    bu=[]
-    sp=[]
-    shstart=0
-    spstart=0
-    dragonp=0
-    sheildp=0
-    sheildav=1
-    bossm=0
-    bb=[]
-    speed=1
-    speedp=0
-    time = 60
-    bossh=100
-    t=0
-    bt=20
-
+    STEP = 0.0001;    me = person(50,9);    bsp = boss();    score=0;    lives=5;    co=[];    ob=[];    mag=[];    dra=[];    drag=[];    bu=[];    sp=[];    shstart=0;    spstart=0;    dragonp=0;    sheildp=0;    sheildav=1;    bossm=0;    bb=[];    speed=1;    speedp=0;    time = 60;    bossh=100;    t=0;
+    bt=2000
+    
     while True:
         tty.setcbreak(sys.stdin.fileno())
 
         t+=1
-        sleep(0.08)
+        sleep(0.1)
         system('clear')
         # key event
         key_pressed()
@@ -130,7 +109,7 @@ def mandalorian():
             me.upx(-0.1) 
         if Bullet:
             Bullet=False
-            bu.append(spr(me.getx(),me.gety(),'>'))
+            bu.append(spr(me.getx()+2,me.gety(),'>'))
         # if DownKey:                         #on for dragon movement
         #     if dragonp:
         #         me.dr+=0.02
@@ -146,13 +125,14 @@ def mandalorian():
         		shstart=int(tik.elapsed)
        	#########################################################
 
-        if t%35==0 and bossm==0:
-            if t%105==0:createobs(ob)   
-            elif (t+35)%105==0:createcoins(co)
+        if t%33==0 and bossm==0:
+            if t%99==0:createobs(ob)   
+            elif (t+33)%99==0:createcoins(co)
             else:
                 i=randint(0,2)
-                if i==1:createpower(sp,'P')
-                if i==2:createpower(dra,'D')
+                if i==0:createobs(ob)
+                elif i==1:createpower(sp,'P')
+                else:createpower(dra,'D')
         
         if t%1000==0:
             mag.append(spr(135,randint(5,35),'M'))
@@ -176,12 +156,12 @@ def mandalorian():
         if bossm:                           ## boss mocd on
             # bb have boss bullets
             if t%4==0:
-                bx=100-me.getx()
+                bx=95-me.getx()
                 by=25-me.gety()
                 dis = floor(sqrt((bx)**2+(by)**2))
                 vx=(bx/dis)*2+1
                 vy=(by/dis)*2
-                bb.append(bull(100,bsp.gety(),vx,vy,'*'))
+                bb.append(bull(95,bsp.gety(),vx,vy,'*'))
             d =0
             if me.gety()-bsp.gety() > 0:d=1
             bsp.update(d)
@@ -211,7 +191,8 @@ def mandalorian():
                     lives-=1
             # me hit boss
             for i in bu:
-                if abs(100-i.getx())<1 and abs(bsp.gety()-i.gety())<2:
+                k=(i.gety()-bsp.gety())
+                if abs(95-i.getx())<=2 and k<8 and k>=0 :
                     bu.remove(i)
                     bossh-=5 
                
@@ -224,12 +205,15 @@ def mandalorian():
                     i.printsp(color.BOLD+color.YELLOW)
                 else:
                     co.remove(i)     
-            for i in ob:        
-                i.update(speed) 
-                if i.valid:
-                    i.printsp(color.BOLD+color.RED)
-                else:
-                    ob.remove(i)  
+            for j in ob:
+                for i in j:
+                    i.update(speed) 
+                    if i.valid:
+                        i.printsp(color.BOLD+color.RED)
+                    else:
+                        ob.remove(j)
+                        break
+
             for i in sp:        
                 i.update(speed) 
                 if i.valid:
@@ -261,14 +245,24 @@ def mandalorian():
                     co.remove(i)
             
             #collision
-            for i in ob:
-                if sheildp==1:
-                    continue
-                if abs(me.getx()-i.getx())<2 and abs(me.gety()-i.gety())<1:
-                    ob.remove(i)
-                    if dragonp==0:
-                        lives-=1
-                    dragonp=0
+            for j in ob:
+                for i in j:
+                    if sheildp==1:
+                        continue
+                    if abs(me.getx()-i.getx())<2 and abs(me.gety()-i.gety())<1:
+                        ob.remove(j)
+                        if dragonp==0:
+                            lives-=1
+                        dragonp=0
+                        break
+
+            #bullet with obstacls
+            for k in bu:    
+                for j in ob:
+                    for i in j:
+                        if abs(k.getx()-i.getx())<1 and (k.gety()-i.gety()<1):
+                            ob.remove(j)
+                            break
 
             #powerup
             for i in sp:
@@ -308,11 +302,9 @@ def mandalorian():
 
         #sky and ground
         sky()
-
         if lives==0:
             print("GAME OVER")
             return      
-
 
         tik.toc()
         ct=int(tik.elapsed)
@@ -361,12 +353,5 @@ def mandalorian():
 
 if __name__ == "__main__":
     system('clear')
-    UpKey= False
-    DownKey= False
-    LeftKey= False
-    RightKey= False
-    PauseKey= False
-    QuitKey= False
-    Bullet=False
-    sheildkey=False
+    UpKey= False;DownKey= False;LeftKey= False;RightKey= False;PauseKey= False;QuitKey= False;Bullet=False;sheildkey=False
     mandalorian()

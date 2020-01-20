@@ -12,10 +12,10 @@ class person:
 		xp=math.floor(self.__x) 
 		yp=math.floor(self.__y)
 		if sh:
-			print(color.CYAN+"\033[{};{}f (  ^@  )".format(yp,xp))	
+			print(color.CYAN+color.BOLD+"\033[{};{}f (  ^@  )".format(yp,xp))	
 			print(color.RED+"\033[{};{}f (  \"|  )".format(yp+1,xp)+color.END)			
 		else:
-			print(color.CYAN+"\033[{};{}f ^@".format(yp,xp))	
+			print(color.CYAN+color.BOLD+"\033[{};{}f ^@".format(yp,xp))	
 			print(color.RED+"\033[{};{}f \"|".format(yp+1,xp)+color.END)	
 		
 				
@@ -70,8 +70,18 @@ class boss:
 			self.__y=35	
 	def printb(self):
 		yp=math.floor(self.__y)
-		print("\033[{};{}f ^@".format(yp,100))	
-		print("\033[{};{}f \"|".format(yp+1,100))				
+		# print("\033[{};{}f ^@".format(yp,95))	
+		# print("\033[{};{}f \"|".format(yp+1,95))				
+		print(color.GREEN+color.BOLD+"""\033[{};7f 
+ 												/\_/\ / (_
+ 												(0 0)//  (_
+ 												(oo)/ -- _(
+												,__//\ \ _(
+												;--   \ _(
+												((  ) )    .*
+												z(____)...'     """.format(yp)+color.END)
+
+
 
 	def gety(self):
 		return self.__y

@@ -38,7 +38,7 @@ class bull(sprite):
 		self.upd(-self.vx,-self.vy)	
 		xc=self.getx()
 		yc=self.gety()
-		self.vy-=0.07
+		# self.vy-=0.07
 		if xc<=3:
 			self.valid=0
 		if yc>35 or yc <3:
