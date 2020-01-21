@@ -134,7 +134,7 @@ def mandalorian():
                 elif i==1:createpower(sp,'P')
                 else:createpower(dra,'D')
         
-        if t%1000==0:
+        if t%100==0:
             mag.append(spr(135,randint(5,35),'M'))
         
 
@@ -285,8 +285,8 @@ def mandalorian():
                 disy=i.gety()-me.gety()
                 dis=floor(sqrt(disx**2+disy**2))        
                 if dis!=0:
-                    me.upx((disx//dis)*3)
-                    me.upy((disy//dis)*3)
+                    me.upx((disx//dis)*2)
+                    me.upy((disy//dis)*2)
                 i.update(speed)
                 
             #dragon if it come
