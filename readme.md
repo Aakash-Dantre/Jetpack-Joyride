@@ -1,3 +1,7 @@
+Terminal based jetpack joyride for DASS assignment
+
+
+
 ## prerequisite
 - ttictoc library
 
